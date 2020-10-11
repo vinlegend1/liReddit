@@ -1,14 +1,30 @@
 import { MikroORM } from "@mikro-orm/core";
 import { __prod__ } from "./constants";
+import { Post } from "./entities/Post";
+import microConfig from './mikro-orm.config';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import { buildSchema } from 'type-graphql';
+import { HelloResolver } from "./resolvers/hello";
 
 const main = async () => {
-    const orm = await MikroORM.init({
-        dbName: 'liredit',
-        debug: !__prod__,
-        type: "postgresql"
+    const orm = await MikroORM.init(microConfig);
+    await orm.getMigrator().up()
+    
+    const app = express();
+    const apolloServer = new ApolloServer({
+        schema: await buildSchema({
+            resolvers: [HelloResolver],
+            validate: false,
+
+        })
     });
 
-    console.log("hello world");
+    apolloServer.applyMiddleware({ app });
+
+    app.listen(4000, () => console.log('server started on localhost:4000'))
 }
 
-main();
+main().catch(err => {
+    console.error(err);
+});
