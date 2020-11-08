@@ -31,8 +31,10 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "pg": "^8.4.1",
+    "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
-    "type-graphql": "^1.0.0"
+    "type-graphql": "^1.0.0",
+    "typeorm": "^0.2.29"
   },
   "mikro-orm": {
     "useTsNode": true,
