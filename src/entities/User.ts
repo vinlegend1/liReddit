@@ -22,6 +22,10 @@ export class User {
   @Property({ type: 'text', unique: true }) // if I remove @Property(), it's not a database column, it's just a field of the class
   username!: string;
 
+  @Field() // if you delete this, you hide the field but still in database
+  @Property({ type: 'text', unique: true }) // if I remove @Property(), it's not a database column, it's just a field of the class
+  email!: string;
+
   @Property({ type: 'text' }) // if I remove @Property(), it's not a database column, it's just a field of the class
   password!: string;
 }

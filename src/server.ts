@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { MikroORM } from "@mikro-orm/core";
-import { __prod__ } from "./constants";
+import { COOKIE_NAME, __prod__ } from "./constants";
 import microConfig from "./mikro-orm.config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
@@ -12,9 +12,11 @@ import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from 'cors';
+import { sendEmail } from "./utils/sendEmail";
 // import { MyContext } from "./types";
 
 const main = async () => {
+  sendEmail("bob@bob.com", 'hello there');
   const orm = await MikroORM.init(microConfig);
   await orm.getMigrator().up();
 
@@ -28,7 +30,7 @@ const main = async () => {
   }));
   app.use(
     session({
-      name: "qid",
+      name: COOKIE_NAME,
       store: new RedisStore({
         client: redisClient,
         disableTouch: true,
